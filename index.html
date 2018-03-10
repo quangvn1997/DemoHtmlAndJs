@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>List product</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body>
+	<h1>Product List</h1>
+	<button type="button" class="btn btn-primary btn-block btn-lg " onclick="window.location.href='register.html' " style="width: 567px;" name="btnAdd" >Add</button>
+	<div>
+	 <table class="table table-hover table-responsive " id="myTable">
+    <thead>
+      <tr>
+      	<th>Id</th>
+        <th>Name</th>
+        <th>Unit Price</th>
+        <th>Status</th>
+        <th></th>
+    	<th></th>
+      </tr>
+    </thead>
+    <tbody id="contentdata">
+    </tbody>
+	</table>
+	</div>
+	<script type="text/javascript">
+		var API_URL = 'https://1-dot-endless-mile-196915.appspot.com/api/v1/products';
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+			   var contentHTML = '<tbody>';
+		       var data = JSON.parse(xhr.responseText);
+		       for (var i = data.list.length - 1; i >= 0; i--) {
+		       	  contentHTML += '<tr>';
+		       	  contentHTML += '<td>' + data.list[i].id + '</td>';
+		       	  contentHTML += '<td>' + data.list[i].name + '</td>';
+		       	  contentHTML += '<td>' + data.list[i].unitPrice + '</td>';
+		       	  contentHTML += '<td>' + data.list[i].status + '</td>';
+		       	  contentHTML += '<td>';
+		       	  contentHTML += '<button title="" type="button" onclick="myFuntionEdit('+data.list[i].id+')" class="btn btn-danger remove show_tip" data-original-title="Remove from list"> Edit  </button>';
+		       	  contentHTML += '</td>'
+		       	  contentHTML += '<td>' + '<button title="" type="button" onclick="myFunction('+data.list[i].id+')" class="btn btn-danger remove show_tip" data-original-title="Remove from list"> Delete  </button>'+ '</td>';
+		       	  contentHTML += '</tr>';		       	  
+		       }
+		       contentHTML += '</tbody>';
+		       document.getElementById('contentdata').innerHTML = contentHTML;
+		    }
+		};
+		xhr.open('GET', API_URL, true);
+		xhr.send();
+
+		function myFuntionEdit(id){
+			if(id!=null){
+				window.location.href ='edit.html'+'?id='+id;
+			}			
+		}
+
+		function myFunction(id) {
+			var API_URL = 'https://1-dot-endless-mile-196915.appspot.com/api/v1/products/'+id+'';
+			var Xhttr = new XMLHttpRequest();
+			if( this.status ==200){
+						alert("success");
+						window.location.reload();
+			}
+			Xhttr.open('DELETE',API_URL,true);
+			Xhttr.send();
+		}
+	</script>
+</body>
+</html>

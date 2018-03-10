@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Product Add</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/styleregister.css">			
+</head>
+<body>
+	<div class="signup-form" >
+    <form  id="productAdd" method="POST">
+		<h2>Add Product</h2>
+		<hr>
+        <div class="form-group">
+        	<input type="text" class="form-control" name="name" placeholder="Name" id="nametxt" >
+        </div>
+        <div class="form-group">
+        	<input type="text" class="form-control" name="unitPrice" placeholder="Price" id="unitPricetxt" >
+        </div>
+		<div class="form-group">
+            <button type="button" class="btn btn-primary btn-inline btn-lg" name="btnSubmit">Submit</button>
+            <button type="button" class="btn btn-primary btn-inline btn-lg" name="btnReset" >Reset</button>
+        </div>        
+    </form>
+    <script type="text/javascript">
+			document.getElementById('productAdd').btnSubmit.onclick = function(){
+				var name = document.getElementById('nametxt').value;
+				var unitPrice = document.getElementById('unitPricetxt').value;
+				var product = {};
+				product.name = name;
+				product.unitPrice = unitPrice;
+				console.log(product);
+				var API_URL = 'https://1-dot-endless-mile-196915.appspot.com/api/v1/products';
+				var Xhttr = new XMLHttpRequest();
+				Xhttr.open('POST',API_URL,true);
+				Xhttr.onreadystatechange = function(){
+					if(this.readyState==4 || this.status ==200){
+						window.location.href ='index.html';
+					}
+				}
+				Xhttr.send(JSON.stringify(product));
+			}
+
+			document.getElementById('productAdd').btnReset.onclick = function(){
+
+				document.getElementById('nametxt').value ='';
+				document.getElementById('unitPricetxt').value ='';
+			}
+		</script>
+</div>
+</body>
+</html>

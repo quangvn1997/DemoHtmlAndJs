@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Edit Product</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/styleregister.css">			
+	 <script type="text/javascript">
+	 	var parameters = location.search.substring(1).split("&");
+	 	var temp = parameters[0].split("=");
+		var API_URL = 'https://1-dot-endless-mile-196915.appspot.com/api/v1/products/'+ unescape(temp[1]);;
+		var Xhttr = new XMLHttpRequest();
+		var data;
+		Xhttr.open('GET', API_URL, true);
+		Xhttr.onreadystatechange = function() {
+				data = JSON.parse(Xhttr.responseText);
+				console.log(data)
+				if (this.readyState == 4 && this.status == 200) {				   
+			       document.getElementById('nametxt').value= data.name;
+			       document.getElementById('unitPricetxt').value = data.unitPrice;
+			    }
+		};
+		Xhttr.send();
+	</script> -->
+</head>
+<body>
+	<div class="signup-form" >
+    <form  id="productEdit" method="PUT">
+		<h2>Edit Product</h2>
+		<hr>
+        <div class="form-group">
+        	<input type="text" class="form-control" name="name" placeholder="Name" id="nametxt" >
+        </div>
+        <div class="form-group">
+        	<input type="text" class="form-control" name="unitPrice" placeholder="Price" id="unitPricetxt" >
+        </div>
+		<div class="form-group">
+            <button type="button" class="btn btn-primary btn-inline btn-lg" name="btnSubmit">Submit</button>
+            <button type="button" class="btn btn-primary btn-inline btn-lg" name="btnReset" >Reset</button>
+        </div>        
+		<script type="text/javascript">						
+			document.getElementById('productEdit').btnSubmit.onclick = function(){
+				var name = document.getElementById('nametxt').value;
+				var unitPrice = document.getElementById('unitPricetxt').value;
+				var product = {};
+				product.name = name;
+				product.unitPrice = unitPrice;
+				var Xhttr = new XMLHttpRequest();
+				Xhttr.onreadystatechange = function(){
+					if(this.readyState==4 && this.status ==200){
+						alert("success");
+						window.location.href ='index.html';	
+					}
+				}							
+				Xhttr.open('PUT',API_URL,true);
+				Xhttr.send(JSON.stringify(product));				
+			}
+
+			document.getElementById('productEdit').btnReset.onclick = function(){
+
+				document.getElementById('nametxt').value =data.name;
+				document.getElementById('unitPricetxt').value =data.unitPrice;
+			}
+		</script>
+	</form>
+</body>
+</html>
