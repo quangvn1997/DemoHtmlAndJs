@@ -1,0 +1,32 @@
+cach add va phan quyen : 
+-phan quyen :
+security-constraint>
+        <web-resource-collection>
+            <web-resource-name>AdminPlace</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+       </auth-constraint>
+</security-constraint>
+
+-add image :
+1.step 1:trong jsp
+<%
+    String uploadUrl =  BlobstoreServiceFactory.getBlobstoreService().createUploadUrl("/admin/product/add");
+%>
+-(from) <form action="<%=uploadUrl%>" method="POST" enctype="multipart/form-data">
+2.step 2:trong servlet
+Map<String, List<BlobKey>> blobs = BlobstoreServiceFactory.getBlobstoreService().getUploads(req);
+List<BlobKey> blobKeyList = blobs.get("myImage");
+BlobKey blobKey = blobKeyList.get(0);
+
+ImagesService imagesService = ImagesServiceFactory.getImagesService();
+ServingUrlOptions servingOptions = ServingUrlOptions.Builder.withBlobKey(blobKey);
+String imageUrl = imagesService.getServingUrl(servingOptions);
+String username = req.getParameter("username");
+String strUnitPrice = req.getParameter("unitPrice");
+int unitPrice = Integer.parseInt(strUnitPrice);
+
+
+
